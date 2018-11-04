@@ -15,14 +15,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 //-------------------------------
 //View contents of the login page
 //-------------------------------
 
-public class View extends JFrame{
+public class LogView extends JFrame{
 
-	private Controller controller;
+	private LogController controller;
 
 	private JLabel errorMsg;
 	private JTextField emailTF;
@@ -30,7 +31,7 @@ public class View extends JFrame{
 	private JCheckBox captcha;
 
 	//View class constructor
-	public View(Controller c) {
+	public LogView(LogController c) {
 		this.controller = c;
 		settings();
 		creatingComponents();
@@ -54,7 +55,6 @@ public class View extends JFrame{
 
 		//creating top panel with welcome message
 		JPanel topPanel = new JPanel(new GridBagLayout());
-		//topPanel.setSize(200, 300);
 		JLabel welcomeMsg = new JLabel("Welcome to CMD's booking system!");
 		welcomeMsg.setFont(new Font(welcomeMsg.getName(), Font.BOLD, 16));
 		topPanel.add(welcomeMsg);
@@ -77,16 +77,16 @@ public class View extends JFrame{
 		this.add(midPanel);
 
 		//creating panel with error label and captcha
+		JPanel captchaPanel = new JPanel(new GridLayout(2,1));
 		JLabel error = new JLabel ("");
 		error.setForeground(Color.RED);
 		this.errorMsg = error;
-		JPanel captchaPanel = new JPanel(new GridLayout(2,1));
 		JCheckBox captcha = new JCheckBox("I'm not a robot.");
 		this.captcha = captcha;
 		captchaPanel.add(captcha);
 		captchaPanel.add(error);
-		captcha.setHorizontalAlignment(captcha.CENTER);
-		error.setHorizontalAlignment(error.CENTER);
+		captcha.setHorizontalAlignment(SwingConstants.CENTER);
+		error.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(captchaPanel);
 
 
@@ -100,8 +100,6 @@ public class View extends JFrame{
 		signup.setActionCommand("signup");
 		bottomPanel.add(login);
 		bottomPanel.add(signup);
-		this.add(bottomPanel);
-
 		this.add(bottomPanel);
 
 		this.validate();
@@ -121,8 +119,8 @@ public class View extends JFrame{
 	public String getEmail() {
 		return emailTF.getText();
 	}
-	public char[] getPassTF() {
-		return passTF.getPassword();
+	public String getPassTF() {
+		return String.valueOf(passTF.getPassword());
 	}
 	public JLabel getErrorMsg() {
 		return errorMsg;
