@@ -19,7 +19,7 @@ import javax.swing.SwingConstants;
 public class SignView extends JFrame{
 
 	private SignController controller;
-	private boolean isCostumer;
+	private boolean isCustomer;
 	private JLabel errorMsg;
 	
 	private JTextField fullName;
@@ -76,7 +76,7 @@ public class SignView extends JFrame{
 	//creates the view for a new costumer sign-up
 	public void costumerLogin() {
 		
-		isCostumer = true;
+		isCustomer = true;
 		this.getContentPane().removeAll();
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -173,7 +173,7 @@ public class SignView extends JFrame{
 	//creates the view for a new costumer sign-up
 	public void barberLogin() {
 		
-		isCostumer = false;
+		isCustomer = false;
 		this.getContentPane().removeAll();
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -245,7 +245,7 @@ public class SignView extends JFrame{
 		this.add(passConfTF, c);
 		this.confPass = passConfTF;
 
-		JLabel error = new JLabel("test");
+		JLabel error = new JLabel("");
 		error.setForeground(Color.RED);
 		error.setHorizontalAlignment(SwingConstants.CENTER);
 		c.anchor = GridBagConstraints.CENTER;
@@ -279,14 +279,14 @@ public class SignView extends JFrame{
 
 	//sets size and visibility of the view
 	private void settings() {
-		this.setSize(400, 450);
+		this.setSize(400, 475);
 		this.setResizable(false);
 		this.setVisible(true);
 
 	}
 	
-	public boolean isCostumer() {
-		return isCostumer;
+	public boolean isCustomer() {
+		return isCustomer;
 	}
 
 	public JLabel getErrorMsg() {

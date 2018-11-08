@@ -40,16 +40,6 @@ public class LogView extends JFrame{
 	//create all components and panels and add to the frame
 	private void creatingComponents() {
 
-		//creating menu bar and itens
-		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu("File");
-		JMenuItem menuClose= new JMenuItem("Close");
-		menuClose.setActionCommand("close");
-		menuClose.addActionListener(controller);
-		menu.add(menuClose);
-		menuBar.add(menu);
-		this.setJMenuBar(menuBar);
-
 		//creating a grid layout manager for the frame
 		this.setLayout(new GridLayout(0,1));
 
@@ -107,11 +97,20 @@ public class LogView extends JFrame{
 
 	}
 
-	//sets size and visibility of the view
+	//sets basic settings for the frame and creates the menu bar
 	private void settings() {
 		this.setSize(350, 300);
 		this.setResizable(false);
 		this.setVisible(true);
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("File");
+		JMenuItem menuClose= new JMenuItem("Close");
+		menuClose.setActionCommand("close");
+		menuClose.addActionListener(controller);
+		menu.add(menuClose);
+		menuBar.add(menu);
+		this.setJMenuBar(menuBar);
+
 
 	}
 
