@@ -10,12 +10,15 @@ import main.Model;
 //Controller class for the User view and model
 
 public class CostController implements ActionListener {
-	
+
 	private CostView view;
 	private Model model;
-	
-	public CostController(String fullName){
+	private int userId;
+
+	public CostController(String fullName, int id){
+		this.userId = id;
 		this.view = new CostView(this, fullName);
+		this.model = new Model();
 	}
 
 	//manages user interactivity
@@ -23,36 +26,70 @@ public class CostController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("close")) {
 			System.exit(0);
+
+		//generates the view where the user can make new appointments	
 		} else if (e.getActionCommand().equals("newApt")) {
-			this.view.newApt();
-			//this.model.fillBarbJbox(this.view.getBarbCb());
-			
+			view.newApt();
+
 		//changes number of entries in daybox according to selected month	
 		} else if (e.getActionCommand().equals("month")) {
-				JComboBox cb = (JComboBox)e.getSource();
-				String month = (String) cb.getSelectedItem();
-				
-				if (month.equals("January") || month.equals("March") || month.equals("May") || month.equals("July") ||
-						month.equals("August") || month.equals("October") || month.equals("December")){
-					Integer[] days = new Integer[31]; 
-					for(int i=1;i<=31;i++){
-					    days[i - 1] = i;
-					    this.view.getDayCb().addItem(days[i - 1]);
-					}
-				} else if (month.equals("April") || month.equals("June") || month.equals("September") || month.equals("November")) {
-					Integer[] days = new Integer[30]; 
-					for(int i=1;i<=30;i++){
-					    days[i - 1] = i;
-					    this.view.getDayCb().addItem(days[i - 1]);
-					}
-				} else {
-					Integer[] days = new Integer[29]; 
-					for(int i=1;i<=29;i++){
-					    days[i - 1] = i;
-					    this.view.getDayCb().addItem(days[i - 1]);
-					}
-				}
-		}		
+			JComboBox<String> cb = (JComboBox) e.getSource();
+			String month = (String) cb.getSelectedItem();
+			view.setDayBox(month);
+
+		//fills the combo box with the barber names from the DB
+		} else if (e.getActionCommand().equals("barbBox")) {
+			view.setBarbSearch(true);
+			view.settingBarberCB();
+
+		//fills the combo box with the location of the barbers from the DB	
+		} else if (e.getActionCommand().equals("locBox")) {
+			view.setBarbSearch(false);
+			view.settingLocationCB();
+
+		//generates the panel where the user can check his/her appointment
+		}else if (e.getActionCommand().equals("checkApt")) {
+			view.checkApt();
+			
+			//creates a new entry in the appointment relationship with the data the user selected in the CostView	
+		} else if (e.getActionCommand().equals("apt")) {
+
+			int monthTemp = view.getMonthCb() + 1;
+			String month = "";
+			if (monthTemp >= 10) {
+				month = String.valueOf(monthTemp);
+			} else {
+				month = "0" + String.valueOf(monthTemp);
+			}
+
+			String dayTemp = view.getDayCb();
+			String day = "";
+			if (dayTemp.length() == 1) {
+				day = "0" + dayTemp;
+			} else {
+				day = dayTemp;
+			}
+
+			String date = "2018-" + month + "-" + day;
+			String hour = view.getHoursCb();
+
+			//getting barber id using the fullName or the location
+			int barbID = 0;
+			if(view.isBarbSearch()) {
+				barbID = model.gettingBarberId(view.getBarbCb(), true);
+			}else {
+				barbID =  model.gettingBarberId(view.getBarbCb(), false);
+			}
+			model.newApt(userId, barbID, date, hour);
+		}
+	}
+
+	public String[] getBarbersFromDB() {
+		return model.getBarbersList();
+	}
+
+	public String[] getLocationsFromDB() {
+		return model.getLocationList();
 	}
 
 }

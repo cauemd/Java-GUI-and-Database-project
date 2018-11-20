@@ -21,7 +21,6 @@ public class SignView extends JFrame{
 	private SignController controller;
 	private boolean isCustomer;
 	private JLabel errorMsg;
-	
 	private JTextField fullName;
 	private JTextField mobile;
 	private JTextField location;
@@ -56,7 +55,7 @@ public class SignView extends JFrame{
 
 
 		//setting buttons that will generate the view for different kinds of users
-		JButton costBtn = new JButton("New Costumer");
+		JButton costBtn = new JButton("New Customer");
 		costBtn.addActionListener(controller);
 		costBtn.setActionCommand("cost");
 		JButton barbBtn = new JButton("New Barber");
