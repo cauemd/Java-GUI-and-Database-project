@@ -28,20 +28,21 @@ public class SignController implements ActionListener {
 		//runs validation and inserts new entry in the database if valid
 		} else if (e.getActionCommand().equals("register")) {
 			if (validate()) {
-				String name = view.getFullName().trim();
+				String fName = view.getFirstName().trim();
 				String mobile = view.getMobile().trim();
 				String email = view.getEmail();
 				String pass = view.getPassword();
 
 				if (view.isCustomer()) {
+					String lName = view.getlastName().trim();
 					this.model = new Model();
-					model.newCust(name, mobile, email, pass);
+					model.newCust(fName, lName, mobile, email, pass);
 					this.view.dispose();
 					new login.LogController();
 				} else {
 					String loc = view.getLoc().trim();
 					this.model = new Model();
-					model.newBarb(name, mobile, loc, email, pass);
+					model.newBarb(fName, mobile, loc, email, pass);
 					this.view.dispose();
 					new login.LogController();
 				}
@@ -54,7 +55,7 @@ public class SignController implements ActionListener {
 	//validates all fields before inserting into the database
 	private boolean validate() {
 		//checking for empty fields
-		if (view.getFullName().equals("") || view.getMobile().equals("") || view.getPassword().equals("")) {
+		if (view.getFirstName().equals("") || view.getMobile().equals("") || view.getPassword().equals("")) {
 			view.getErrorMsg().setText("Please, complete all fields.");
 			return false;	
 		}else if(!view.isCustomer() && view.getLoc().equals("")) {

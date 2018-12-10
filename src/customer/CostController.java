@@ -15,9 +15,9 @@ public class CostController implements ActionListener {
 	private Model model;
 	private int userId;
 
-	public CostController(String fullName, int id){
+	public CostController(String name, int id){
 		this.userId = id;
-		this.view = new CostView(this, fullName);
+		this.view = new CostView(this, name);
 		this.model = new Model();
 	}
 

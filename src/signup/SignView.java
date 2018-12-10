@@ -21,7 +21,8 @@ public class SignView extends JFrame{
 	private SignController controller;
 	private boolean isCustomer;
 	private JLabel errorMsg;
-	private JTextField fullName;
+	private JTextField fName;
+	private JTextField lName;
 	private JTextField mobile;
 	private JTextField location;
 	private JTextField email;
@@ -81,60 +82,71 @@ public class SignView extends JFrame{
 		GridBagConstraints c = new GridBagConstraints();
 
 		//creating top panel with name and mobile labels and text fields
-		JLabel fullName = new JLabel("Full Name:");
+		JLabel firstName = new JLabel("First Name:");
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 0;
 		c.gridy = 0;
-		this.add(fullName, c);
-		JLabel mobileNum = new JLabel("Mobile Number:");
+		this.add(firstName, c);
+		JLabel lastName = new JLabel("Last Name:");
+		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 0;
 		c.gridy = 1;
+		this.add(lastName, c);
+		JLabel mobileNum = new JLabel("Mobile Number:");
+		c.gridx = 0;
+		c.gridy = 2;
 		this.add(mobileNum, c);
 		JLabel mail = new JLabel ("E-mail:");
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 3;
 		this.add(mail, c);
 		JLabel confMail = new JLabel ("Confirm E-mail:");
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		this.add(confMail, c);
 		JLabel password = new JLabel("Password:");
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		this.add(password, c);
 		JLabel passConf = new JLabel("Confirm Password: ");
 		c.gridx = 0;
-		c.gridy = 5;
+		c.gridy = 6;
 		this.add(passConf, c);
-		JTextField nameTF = new JTextField(20);
+		JTextField fnameTF = new JTextField(20);
 		c.insets = new Insets(10,10,10,10);
 		c.gridx = 1;
 		c.gridy = 0;
-		this.add(nameTF, c);
-		this.fullName = nameTF;
-		JTextField mobileTF = new JTextField(20);
+		this.add(fnameTF, c);
+		this.fName = fnameTF;
+		JTextField lnameTF = new JTextField(20);
+		c.insets = new Insets(10,10,10,10);
 		c.gridx = 1;
 		c.gridy = 1;
+		this.add(lnameTF, c);
+		this.lName = lnameTF;
+		JTextField mobileTF = new JTextField(20);
+		c.gridx = 1;
+		c.gridy = 2;
 		this.add(mobileTF, c);
 		this.mobile = mobileTF;
 		JTextField mailTF = new JTextField(20);
 		c.gridx = 1;
-		c.gridy = 2;
+		c.gridy = 3;
 		this.add(mailTF, c);
 		this.email = mailTF;
 		JTextField confMailTF = new JTextField(20);
 		c.gridx = 1;
-		c.gridy = 3;
+		c.gridy = 4;
 		this.add(confMailTF, c);
 		this.confEmail = confMailTF;
 		JPasswordField passTF = new JPasswordField(20);
 		c.gridx = 1;
-		c.gridy = 4;
+		c.gridy = 5;
 		this.add(passTF, c);
 		this.password = passTF;
 		JPasswordField passConfTF = new JPasswordField(20);
 		c.gridx = 1;
-		c.gridy = 5;
+		c.gridy = 6;
 		this.add(passConfTF, c);
 		this.confPass = passConfTF;
 		JLabel error = new JLabel("");
@@ -142,7 +154,7 @@ public class SignView extends JFrame{
 		error.setHorizontalAlignment(SwingConstants.CENTER);
 		c.anchor = GridBagConstraints.CENTER;
 		c.gridx = 0;
-		c.gridy = 6;
+		c.gridy = 7;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		this.add(error, c);
@@ -155,13 +167,13 @@ public class SignView extends JFrame{
 		c.ipadx = 5;
 		c.ipady = 5;
 		c.gridx = 0;
-		c.gridy = 7;
+		c.gridy = 8;
 		this.add(register, c);
 		JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(controller);
 		cancel.setActionCommand("cancel");
 		c.gridx = 0;
-		c.gridy = 8;
+		c.gridy = 9;
 		this.add(cancel, c);
 
 		this.validate();
@@ -178,7 +190,7 @@ public class SignView extends JFrame{
 		GridBagConstraints c = new GridBagConstraints();
 
 		//creating top panel with name and mobile labels and text fields
-		JLabel fullName = new JLabel("Full Name:");
+		JLabel fullName = new JLabel("Name:");
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 0;
 		c.gridy = 0;
@@ -212,7 +224,7 @@ public class SignView extends JFrame{
 		c.gridx = 1;
 		c.gridy = 0;
 		this.add(nameTF, c);
-		this.fullName = nameTF;
+		this.fName = nameTF;
 		JTextField mobileTF = new JTextField(20);
 		c.gridx = 1;
 		c.gridy = 1;
@@ -278,7 +290,7 @@ public class SignView extends JFrame{
 
 	//sets size and visibility of the view
 	private void settings() {
-		this.setSize(400, 475);
+		this.setSize(400, 550);
 		this.setResizable(false);
 		this.setVisible(true);
 
@@ -292,8 +304,11 @@ public class SignView extends JFrame{
 		return errorMsg;
 	}
 	
-	public String getFullName() {
-		return fullName.getText();
+	public String getFirstName() {
+		return fName.getText();
+	}
+	public String getlastName() {
+		return lName.getText();
 	}
 
 	public String getMobile() {

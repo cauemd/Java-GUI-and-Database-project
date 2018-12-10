@@ -45,6 +45,7 @@ public class CostView extends JFrame{
 		return user;
 	}
 
+	//sets basic elements (left panel) for the Customer View 
 	private void createElements() {
 		
 		BorderLayout manager = new BorderLayout();
@@ -243,6 +244,7 @@ public class CostView extends JFrame{
 		}
 	}
 	
+	//populates the JComboBox with a list of the names of all verified barbers
 	public void settingBarberCB() {
 		
 		this.barbCb.removeAllItems();
@@ -252,6 +254,7 @@ public class CostView extends JFrame{
 		this.cbLabel.setText("Please, select your barber:");
 	}
 	
+	//populates the JComboBox with a list of the location of all verified barbers
 	public void settingLocationCB() {
 		this.barbCb.removeAllItems();
 		for (String item: controller.getLocationsFromDB()) {
@@ -261,7 +264,7 @@ public class CostView extends JFrame{
 	}
 	
 	//sets basic settings for the frame and creates the menu bar
-	private void settings() {
+	public void settings() {
 
 		this.setVisible(true);
 		this.setSize(800, 600);
