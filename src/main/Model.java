@@ -82,8 +82,16 @@ public class Model {
 				stmt.setString(2, email);
 				rs = stmt.executeQuery();
 				if (rs.next()) {
+					String approved = rs.getString("verified");
+					if (approved.equals("N")) {
+						JOptionPane.showMessageDialog(new JFrame(), "Account Waiting Administrator Verification.", "Unverified Account",
+								JOptionPane.ERROR_MESSAGE);
+						return false;
+					}
 					String user = rs.getString("fullName");
-					new barber.BarbController(user);
+					int id = rs.getInt("barbID");
+
+					new barber.BarbController(user, id);
 					return true;
 				} else {
 					//verifying if it's an admin account
@@ -297,9 +305,8 @@ public class Model {
 		return barbers;
 	}
 
-	//changes the 
+	//changes barbers' status to "verified" after administrator approval
 	public void verify(String selectedBarb) {
-		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
 		String query = "UPDATE barbers SET verified = 'Y' WHERE fullName = ?;";
 		try {
@@ -308,12 +315,159 @@ public class Model {
 			stmt.execute();
 			JOptionPane.showMessageDialog(new JFrame(), "Barber Approved!.", "Confirmation Screen",
 					JOptionPane.INFORMATION_MESSAGE);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	//retrieves all apts of a barber using the ID, gets "approved" if boolean is true or gets "review" if boolean is false.
+	public Object[][] gettingAppData(int id, boolean check) {
 
+		//Hard-coded, not ideal
+		Object[][] data = new Object[100][6]; 
+		int row = 0;
+
+		if (check) {
+			PreparedStatement stmt = null;
+			String query = "SELECT appointments.apID, customers.firstName, customers.lastName, customers.mobileNumber, "
+					+ "appointments.date, appointments.hour, appointments.approved FROM appointments INNER JOIN customers "
+					+ "ON appointments.csID = customers.csID WHERE appointments.barbID = ? AND appointments.approved = 'N'";
+
+			try {
+				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, id);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					int apID = rs.getInt("apID");
+					String name = rs.getString("firstName") + " " + rs.getString("lastName");
+					String number = rs.getString("mobileNumber");
+					String date = rs.getString("date");
+					String hour = rs.getString("hour");
+					data[row][0] = apID;
+					data[row][1] = name;
+					data[row][2] = number;
+					data[row][3] = date;
+					data[row][4] = hour;
+					data[row][5] = false;
+					row++;
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data;
+		} else {
+			PreparedStatement stmt = null;
+			String query = "SELECT appointments.apID, customers.firstName, customers.lastName, customers.mobileNumber, "
+					+ "appointments.date, appointments.hour, appointments.review FROM appointments INNER JOIN customers "
+					+ "ON appointments.csID = customers.csID WHERE appointments.barbID = ? AND appointments.approved = 'Y'";
+
+			try {
+				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, id);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					int apID = rs.getInt("apID");
+					String name = rs.getString("firstName") + " " + rs.getString("lastName");
+					String number = rs.getString("mobileNumber");
+					String date = rs.getString("date");
+					String hour = rs.getString("hour");
+					String review = rs.getString("review");
+					data[row][0] = apID;
+					data[row][1] = name;
+					data[row][2] = number;
+					data[row][3] = date;
+					data[row][4] = hour;
+					data[row][5] = review;
+					row++;
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data;
+		}
+	}
+
+	//gets an array with the Appointments ID from the barber controller and changes it's "Approved" status to "Y" in the database
+	public void approveAppointments(ArrayList<?> appIDs) {
+
+		PreparedStatement stmt = null;
+		String query = "UPDATE appointments SET approved = 'Y' WHERE apID = ?;";
+		try {
+			stmt = conn.prepareStatement(query);
+
+			for(int x = 0; x < appIDs.size(); x++) {
+				stmt.setInt(1, (int) appIDs.get(x));
+				stmt.execute();
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(new JFrame(), "Appointments Approved!.", "Confirmation Screen",
+				JOptionPane.INFORMATION_MESSAGE);
+
+	}
+
+	//returns and object[][] with the appointments of the user which ID is being passed as arg
+	public Object[][] gettingCustomerAppointments(int userId) {
+
+		//Hard-coded, not ideal
+		Object[][] data = new Object[100][6]; 
+		int row = 0;
+
+		PreparedStatement stmt = null;
+		String query = "SELECT appointments.apID, barbers.fullName, barbers.phoneNumber, appointments.date, appointments.hour, appointments.review "
+				+ "FROM appointments INNER JOIN barbers ON appointments.barbID = barbers.barbID "
+				+ "WHERE appointments.csID = ?;";
+
+		try {
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, userId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int apID = rs.getInt("apID");
+				String name = rs.getString("fullName");
+				String number = rs.getString("phoneNumber");
+				String date = rs.getString("date");
+				String hour = rs.getString("hour");
+				String review = rs.getString("review");
+				data[row][0] = apID;
+				data[row][1] = name;
+				data[row][2] = number;
+				data[row][3] = date;
+				data[row][4] = hour;
+				data[row][5] = review;
+				row++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	public void updatingReviews(ArrayList<?> reviewsList) {
+		PreparedStatement stmt = null;
+		String query = "UPDATE appointments SET review = ? WHERE apID = ?;";
+		try {
+			stmt = conn.prepareStatement(query);
+
+			for(int x = 0; x < reviewsList.size(); x += 2) {
+				stmt.setString(1, (String) reviewsList.get(x));
+				stmt.setInt(2, (int) reviewsList.get(x + 1));
+				stmt.execute();
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(new JFrame(), "Reviews Submited!.", "Confirmation Screen",
+				JOptionPane.INFORMATION_MESSAGE);		
+	}		
 }

@@ -99,6 +99,7 @@ public class LogView extends JFrame{
 
 	//sets basic settings for the frame and creates the menu bar
 	private void settings() {
+		this.addWindowListener(controller);
 		this.setSize(350, 300);
 		this.setResizable(false);
 		this.setVisible(true);

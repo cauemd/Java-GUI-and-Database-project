@@ -40,7 +40,7 @@ public class AdmView extends JFrame{
 
 	}
 
-	//sets basic elements (left panel) for the Customer View 
+	//sets basic elements (left panel) for the Admin View 
 	private void createElements() {
 
 		BorderLayout manager = new BorderLayout();
@@ -215,10 +215,13 @@ public class AdmView extends JFrame{
 		return (String) barbList.getSelectedItem();
 	}
 
+	//sets basic components of the frame
 	public void settings() {
 
 		this.setVisible(true);
 		this.setSize(800, 600);
+		this.addWindowListener(controller);
+		this.setResizable(false);
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
 		JMenuItem menuClose= new JMenuItem("Close");

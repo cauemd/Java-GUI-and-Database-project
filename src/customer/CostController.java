@@ -2,14 +2,15 @@ package customer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JComboBox;
-
 import main.Model;
 
 //Controller class for the User view and model
 
-public class CostController implements ActionListener {
+public class CostController implements ActionListener, WindowListener {
 
 	private CostView view;
 	private Model model;
@@ -48,10 +49,17 @@ public class CostController implements ActionListener {
 			view.settingLocationCB();
 
 		//generates the panel where the user can check his/her appointment
-		}else if (e.getActionCommand().equals("checkApt")) {
+		}else if (e.getActionCommand().equals("seeApt")) {
 			view.checkApt();
+		
+		}else if (e.getActionCommand().equals("newReview")) {
+			view.reviewPrompt();		
 			
-			//creates a new entry in the appointment relationship with the data the user selected in the CostView	
+		}else if (e.getActionCommand().equals("subReview")) {
+			this.model = new Model();
+			model.updatingReviews(view.gettingReviews());
+		
+		//creates a new entry in the appointment relationship with the data the user selected in the CostView	
 		} else if (e.getActionCommand().equals("apt")) {
 
 			int monthTemp = view.getMonthCb() + 1;
@@ -90,6 +98,54 @@ public class CostController implements ActionListener {
 
 	public String[] getLocationsFromDB() {
 		return model.getLocationList();
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		new login.LogController();
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Object[][] getCustomersApt() {
+		this.model = new Model();
+		return model.gettingCustomerAppointments(userId);
+		 
 	}
 
 }
